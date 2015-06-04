@@ -25,12 +25,25 @@
   "keywords": [
     "compute.io",
     "compute",
-    "computation"
+    "computation",
+    "array",
+	"data analysis",
+    "missing values",
+	"encoding",
+    "element-wise",
+    "accessor"
   ],
   "bugs": {
     "url": "https://github.com/compute-io/ismissing/issues"
   },
-  "dependencies": {},
+  "dependencies": {
+    "utils-copy": "^1.0.0",
+    "validate.io-array": "^1.0.6",
+    "validate.io-boolean-primitive": "^1.0.0",
+    "validate.io-number": "^1.0.3",
+    "validate.io-number-primitive": "^1.0.0",
+    "validate.io-object": "^1.0.4"
+  },
   "devDependencies": {
     "chai": "2.x.x",
     "mocha": "2.x.x",

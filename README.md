@@ -17,18 +17,64 @@ For use in the browser, use [browserify](https://github.com/substack/node-browse
 ## Usage
 
 ``` javascript
-var foo = require( 'compute-ismissing' );
+var isMissing = require( 'compute-ismissing' );
 ```
 
-#### foo( arr )
+#### isMissing( x, options )
 
-What does this function do?
+This function checks for each element of `arrays` and `matrices` whether they are missing values. It returns  an `array` with length equal to that of the input `array` or a `matrix` with same dimensions as input `x`. Each output element is either `0` or `1`. A value of `1` means that an element constitutes a missing value and `0` means that an element is __not__ missing. By default, all elements equal to `null` are considered missing values.
 
+The function accepts three `options`:
+
+* __encoding__: `array` holding all values which will be regarded as missing values. Default: `[null]`.
+*  __copy__: `boolean` indicating whether to return a new `array` containing 0/1's indicating whether the corresponding element is an even number. Default: `true`.
+*  __accessor__: accessor `function` for accessing numeric values in object `arrays`.
+
+To mutate the input `array` (e.g., when input values can be discarded or when optimizing memory usage), set the `copy` option to `false`.
+
+``` javascript
+var arr = [ 1, null, 3 ];
+
+var out = isMissing( arr, {
+	'copy': false
+});
+// returns [ 0, 1, 0 ]
+
+console.log( arr === out );
+// returns true
+```
+
+For object `arrays`, provide an accessor `function` for accessing `array` values.
+
+``` javascript
+var data = [
+	['beep', 1],
+	['boop', null],
+	['bip', 3],
+	['bap', NaN],
+	['baz', 5]
+];
+
+function getValue( d, i ) {
+	return d[ 1 ];
+}
+
+var out = isMissing( data, {
+	'accessor': getValue
+});
+// returns [ 0, 1, 0, 1, 0 ]
+```
 
 ## Examples
 
 ``` javascript
-var foo = require( 'compute-ismissing' );
+var isMissing = require( 'compute-ismissing' );
+
+console.log( isMissing( [ 1, null, null, 3 ] ) );
+
+console.log( isMissing( [ 'abc', 'def', '', 'ghi', 'jkl', ''], {'encoding': ['']} ) );
+
+console.log( isMissing( [ {'x': 2}, {'x': 999}, {'x': 4} ], {'encoding': [999], 'accessor': function(d){ return d.x;}} ) );
 ```
 
 To run the example code from the top-level application directory,

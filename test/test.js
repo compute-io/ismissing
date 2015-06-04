@@ -144,7 +144,7 @@ describe( 'compute-ismissing', function tests() {
 	it( 'should check whether elements in array are missing values using default encoding', function test() {
 		var data, expected, results;
 
-		data = [ 2, null, 5, null, 8, NaN ];
+		data = [ 2, null, 5, null, 8, null ];
 		expected = [ 0, 1, 0, 1, 0, 1 ];
 
 		results = isMissing( data );
@@ -202,7 +202,7 @@ describe( 'compute-ismissing', function tests() {
 	it( 'should check whether elements in array are missing values and mutate the input array', function test() {
 		var data, expected, results;
 
-		data = [ 2, 4, null, 3, NaN, 2 ];
+		data = [ 2, 4, null, 3, null, 2 ];
 		expected = [ 0, 0, 1, 0, 1, 0 ];
 
 		results = isMissing( data, {'copy': false} );
