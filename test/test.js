@@ -3,7 +3,7 @@
 
 // MODULES //
 
-var matrix = require( 'compute-matrix' );
+var matrix = require( 'dstructs-matrix' );
 
 var // Expectation library:
 	chai = require( 'chai' ),
@@ -165,16 +165,27 @@ describe( 'compute-ismissing', function tests() {
 		assert.deepEqual( results, expected );
 	});
 
+	it( 'should check whether elements in array are missing values using custom encoding including NaN', function test() {
+		var data, expected, results;
+
+		data = [ 2, null, 5, NaN, 8, null ];
+		expected = [ 0, 1, 0, 1, 0, 1 ];
+
+		results = isMissing( data, {'encoding': [NaN, null]} );
+
+		assert.strictEqual( results.length, expected.length );
+		assert.deepEqual( results, expected );
+	});
+
 	it( 'should check whether elements in a matrix are missing values', function test() {
 		var data, expected, results;
 
 		data = matrix( new Int32Array( [ 2, 4, 5, 3, 999, 3, 999, 2, 1 ] ), [3,3] );
-		expected = matrix( new Int32Array( [ 0, 0, 0, 0, 1, 0, 1, 0, 0 ] ), [3,3] );
+		expected = '0,0,0;0,1,0;1,0,0';
 
 		results = isMissing( data, {'encoding':[999]} );
 
-		assert.strictEqual( results.length, expected.length );
-		assert.deepEqual( results, expected );
+		assert.strictEqual( results.toString(), expected );
 	});
 
 	it( 'should check whether elements in array are missing values using an accessor', function test() {
