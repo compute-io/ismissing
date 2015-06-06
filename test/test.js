@@ -3,10 +3,12 @@
 
 // MODULES //
 
-var matrix = require( 'dstructs-matrix' );
 
 var // Expectation library:
 	chai = require( 'chai' ),
+
+	// Matrix data structure
+	matrix = require( 'dstructs-matrix' ),
 
 	// Module to be tested:
 	isMissing = require( './../lib' );
@@ -26,10 +28,9 @@ describe( 'compute-ismissing', function tests() {
 		expect( isMissing ).to.be.a( 'function' );
 	});
 
-	it( 'should throw an error if provided an invalid input type', function test() {
+	it( 'should throw an error if provided an input which is not array-like or matrix-like', function test() {
 		var values = [
 				5,
-				'5',
 				{},
 				true,
 				null,
@@ -68,75 +69,6 @@ describe( 'compute-ismissing', function tests() {
 		function badValue( value ) {
 			return function() {
 				isMissing( [1,2,3,4,5], value );
-			};
-		}
-	});
-
-	it( 'should throw an error if provided an accessor which is not a function', function test() {
-		var values = [
-			'5',
-			5,
-			true,
-			undefined,
-			null,
-			NaN,
-			[],
-			{}
-		];
-
-		for ( var i = 0; i < values.length; i++ ) {
-			expect( badValue( values[ i ] ) ).to.throw( TypeError );
-		}
-
-		function badValue( value ) {
-			return function() {
-				isMissing( [1,2,3,4,5], {'accessor': value} );
-			};
-		}
-	});
-
-	it( 'should throw an error if provided a copy option which is not a boolean', function test() {
-		var values = [
-			'5',
-			5,
-			function(){},
-			undefined,
-			null,
-			NaN,
-			[],
-			{}
-		];
-
-		for ( var i = 0; i < values.length; i++ ) {
-			expect( badValue( values[ i ] ) ).to.throw( TypeError );
-		}
-
-		function badValue( value ) {
-			return function() {
-				isMissing( [1,2,3,4,5], {'copy': value} );
-			};
-		}
-	});
-
-	it( 'should throw an error if provided an encoding option which is not an array', function test() {
-		var values = [
-				5,
-				'5',
-				{},
-				true,
-				null,
-				undefined,
-				NaN,
-				function(){}
-			];
-
-		for ( var i = 0; i < values.length; i++ ) {
-			expect( badValue( values[i] ) ).to.throw( TypeError );
-		}
-
-		function badValue( value ) {
-			return function() {
-				isMissing( [1,2,3,4,5],{'encoding': value} );
 			};
 		}
 	});
@@ -228,12 +160,12 @@ describe( 'compute-ismissing', function tests() {
 		var data, expected, results;
 
 		data = matrix( new Int32Array( [ 2, 981, 999, 3 ] ), [2,2] );
-		expected = matrix( new Int32Array( [ 0, 1, 1, 0 ] ), [2,2] );
+		expected = '0,1;1,0';
 
 		results = isMissing( data, {'copy': false, 'encoding': [999, 981]} );
 
-		assert.strictEqual( results.length, expected.length );
-		assert.deepEqual( results, expected );
+		assert.strictEqual( results.toString(), expected );
+
 		assert.ok( results === data );
 	});
 
